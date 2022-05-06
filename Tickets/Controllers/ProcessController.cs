@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net.Http;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Tickets.Infrastructure.Models;
 
 namespace Tickets.Controllers
 {
     [Route("[controller]/[action]")]
     public class ProcessController : Controller
     {
-        [HttpGet]
-        public string Sale()
+        [HttpPost]
+        public IActionResult Sale([FromBody]Ticket ticket)
         {
-            return "Hello";
+            
+            return Ok(ticket);
         }
     }
 }

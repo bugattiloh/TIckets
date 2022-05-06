@@ -11,13 +11,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Tickets.Infrastructure;
 
 namespace Tickets
 {
     public class Startup
     {
+        private ILogger<Startup> _logger;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,6 +33,17 @@ namespace Tickets
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.Error =
+                    (sender, args) => _logger.LogCritical(args.ErrorContext.Error.Message);
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver()
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                };
+            });
+
             services.AddDbContext<TicketContext>(builder => builder.UseNpgsql(
                 "Host=localhost;Port=5432;Database=ticketdb;Username=postgres;Password=fAP19796"));
             services.AddControllers();
@@ -35,8 +51,10 @@ namespace Tickets
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            _logger = loggerFactory.CreateLogger<Startup>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

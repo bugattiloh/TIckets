@@ -13,6 +13,5 @@ namespace Tickets.Infrastructure.Models
         public DateTime OperationTime { get; set; }
         public string OperationPlace { get; set; }
         public string TicketNumber { get; set; }
-        
     }
 }

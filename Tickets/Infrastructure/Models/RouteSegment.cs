@@ -17,21 +17,6 @@ namespace Tickets.Infrastructure.Models
 
 
         [ForeignKey(nameof(Ticket))] public int TicketId { get; set; }
-
         public virtual Ticket Ticket { get; set; }
-
-        public RouteSegment(string pnrId, int id, string airlineCode, int flightNum, string departPlace,
-            DateTime departDatetime, string arrivePlace, DateTime arriveDatetime, int ticketId)
-        {
-            PnrId = pnrId;
-            Id = id;
-            AirlineCode = airlineCode;
-            FlightNum = flightNum;
-            DepartPlace = departPlace;
-            DepartDatetime = departDatetime;
-            ArrivePlace = arrivePlace;
-            ArriveDatetime = arriveDatetime;
-            TicketId = ticketId;
-        }
     }
 }

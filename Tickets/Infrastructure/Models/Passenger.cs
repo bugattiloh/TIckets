@@ -19,23 +19,5 @@ namespace Tickets.Infrastructure.Models
         public string TicketType { get; set; }
 
         public virtual Ticket Ticket { get; set; }
-
-
-        public Passenger(int id, string name, string surname, string patronymic, string docType, string docNumber,
-            DateTime birthdate, string gender, string passengerType, string ticketNumber, string ticketType,
-            Ticket ticket)
-        {
-            Id = id;
-            Name = name;
-            Surname = surname;
-            Patronymic = patronymic;
-            DocType = docType;
-            DocNumber = docNumber;
-            Birthdate = birthdate;
-            Gender = gender;
-            PassengerType = passengerType;
-            TicketNumber = ticketNumber;
-            TicketType = ticketType;
-        }
     }
 }

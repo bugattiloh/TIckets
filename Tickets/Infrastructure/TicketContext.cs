@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Tickets.Infrastructure.Models;
 
 namespace Tickets.Infrastructure
@@ -25,8 +27,9 @@ namespace Tickets.Infrastructure
                 optionsBuilder.UseNpgsql(
                     "Host=localhost;Port=5432;Database=ticketdb;Username=postgres;Password=fAP19796");
             }
-
+            
             base.OnConfiguring(optionsBuilder);
         }
+        
     }
 }

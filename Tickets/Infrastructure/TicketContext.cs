@@ -16,7 +16,7 @@ namespace Tickets.Infrastructure
         }
 
         public DbSet<Passenger> Passengers { get; set; }
-        public DbSet<Ticket> Segments { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
         public DbSet<RouteSegment> Routes { get; set; }
         public DbSet<Refund> Refunds { get; set; }
 

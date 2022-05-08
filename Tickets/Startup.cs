@@ -43,7 +43,7 @@ namespace Tickets
                     NamingStrategy = new SnakeCaseNamingStrategy()
                 };
             });
-
+            services.AddAutoMapper(o => o.AddProfile(new TicketProfile()));
             services.AddDbContext<TicketContext>(builder => builder.UseNpgsql(
                 "Host=localhost;Port=5432;Database=ticketdb;Username=postgres;Password=fAP19796"));
             services.AddControllers();

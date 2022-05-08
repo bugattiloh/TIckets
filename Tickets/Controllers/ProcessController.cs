@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tickets.Infrastructure;
@@ -14,43 +15,44 @@ namespace Tickets.Controllers
     public class ProcessController : Controller
     {
         private readonly TicketContext _context;
+        private readonly IMapper _mapper;
 
-        public ProcessController(TicketContext context)
+        public ProcessController(TicketContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
+
         [HttpPost]
-        public IActionResult Sale([FromBody] Ticket ticket)
+        [ValidateModel]
+        public IActionResult Sale([FromBody] TicketDto ticketDto)
         {
-            var item = _context.Passengers.FirstOrDefault(p => p.TicketNumber == ticket.Passenger.TicketNumber);
-            if (item != null)
+            var passenger = _context.Passengers.FirstOrDefault(p => p.TicketNumber == ticketDto.Passenger.TicketNumber);
+            if (passenger != null)
             {
                 return Conflict();
             }
 
-            _context.Add(ticket);
+            var ticket = _mapper.Map<Ticket>(ticketDto);
+            _context.Tickets.Add(ticket);
             _context.SaveChanges();
             return Ok();
         }
 
         [HttpPost]
-        public IActionResult Refund([FromBody] Refund refund)
+        [ValidateModel]
+        public IActionResult Refund([FromBody] RefundDto refundDto)
         {
-            var item = _context.Passengers.FirstOrDefault(p => p.TicketNumber == refund.TicketNumber);
-            if (item == null)
+            var passenger = _context.Refunds.FirstOrDefault(r => r.TicketNumber == refundDto.TicketNumber);
+            if (passenger == null)
             {
                 return Conflict();
             }
+            passenger.OperationType = "refund";
 
-            var segment = _context.Segments.FirstOrDefault(s => s.Passenger.TicketNumber == refund.TicketNumber);
-            if (segment != null)
-            {
-                segment.OperationType = "refund";
-            }
-
-
-            _context.Add(refund);
+            var refund = _mapper.Map<Refund>(refundDto);
+            _context.Refunds.Add(refund);
             _context.SaveChanges();
             return Ok();
         }

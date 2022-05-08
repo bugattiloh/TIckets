@@ -11,7 +11,10 @@ namespace Tickets
         public static bool IsJsonValid(this string value, Type type)
         {
             var generator = new JSchemaGenerator();
-            generator.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            generator.ContractResolver = new DefaultContractResolver()
+            {
+                NamingStrategy = new SnakeCaseNamingStrategy()
+            };
             var schema = generator.Generate(type);
             schema.AllowAdditionalProperties = false;
 

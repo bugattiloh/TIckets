@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using Tickets.Infrastructure.Models;
 
 namespace Tickets.Infrastructure
 {

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Tickets.Infrastructure.Models;
 
 namespace Tickets.Infrastructure

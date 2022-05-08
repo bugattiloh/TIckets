@@ -1,10 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Linq;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tickets.Infrastructure;
 using Tickets.Infrastructure.Models;
@@ -28,8 +23,9 @@ namespace Tickets.Controllers
         [ValidateModel]
         public IActionResult Sale([FromBody] TicketDto ticketDto)
         {
-            var passenger = _context.Passengers.FirstOrDefault(p => p.TicketNumber == ticketDto.Passenger.TicketNumber);
-            if (passenger != null)
+            var ticketFromDb = _context.Tickets.FirstOrDefault(t =>
+                t.Passenger.TicketNumber == ticketDto.Passenger.TicketNumber && t.OperationType != "refund");
+            if (ticketFromDb != null)
             {
                 return Conflict();
             }
@@ -44,13 +40,13 @@ namespace Tickets.Controllers
         [ValidateModel]
         public IActionResult Refund([FromBody] RefundDto refundDto)
         {
-            var ticket = _context.Tickets.FirstOrDefault(t => t.Passenger.TicketNumber == refundDto.TicketNumber);
-            if (ticket == null)
+            var ticketFromDb = _context.Tickets.FirstOrDefault(t => t.Passenger.TicketNumber == refundDto.TicketNumber);
+            if (ticketFromDb == null)
             {
                 return Conflict();
             }
 
-            ticket.OperationType = "refund";
+            ticketFromDb.OperationType = "refund";
 
             var refund = _mapper.Map<Refund>(refundDto);
             _context.Refunds.Add(refund);

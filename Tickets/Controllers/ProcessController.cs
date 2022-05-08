@@ -44,12 +44,13 @@ namespace Tickets.Controllers
         [ValidateModel]
         public IActionResult Refund([FromBody] RefundDto refundDto)
         {
-            var passenger = _context.Refunds.FirstOrDefault(r => r.TicketNumber == refundDto.TicketNumber);
-            if (passenger == null)
+            var ticket = _context.Tickets.FirstOrDefault(t => t.Passenger.TicketNumber == refundDto.TicketNumber);
+            if (ticket == null)
             {
                 return Conflict();
             }
-            passenger.OperationType = "refund";
+
+            ticket.OperationType = "refund";
 
             var refund = _mapper.Map<Refund>(refundDto);
             _context.Refunds.Add(refund);

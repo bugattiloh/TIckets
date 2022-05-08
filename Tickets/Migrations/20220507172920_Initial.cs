@@ -47,12 +47,12 @@ namespace Tickets.Migrations
                     Name = table.Column<string>(type: "text", nullable: true),
                     Surname = table.Column<string>(type: "text", nullable: true),
                     Patronymic = table.Column<string>(type: "text", nullable: true),
-                    DocType = table.Column<int>(type: "integer", nullable: false),
-                    DocNumber = table.Column<int>(type: "integer", nullable: false),
+                    DocType = table.Column<string>(type: "text", nullable: true),
+                    DocNumber = table.Column<string>(type: "text", nullable: true),
                     Birthdate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Gender = table.Column<string>(type: "text", nullable: true),
                     PassengerType = table.Column<string>(type: "text", nullable: true),
-                    TicketNumber = table.Column<int>(type: "integer", nullable: false),
+                    TicketNumber = table.Column<string>(type: "text", nullable: true),
                     TicketType = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -75,7 +75,7 @@ namespace Tickets.Migrations
                     AirlineCode = table.Column<string>(type: "text", nullable: true),
                     FlightNum = table.Column<int>(type: "integer", nullable: false),
                     DepartPlace = table.Column<string>(type: "text", nullable: true),
-                    DepartDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DepartDatetime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     ArrivePlace = table.Column<string>(type: "text", nullable: true),
                     ArriveDatetime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     TicketId = table.Column<int>(type: "integer", nullable: false)

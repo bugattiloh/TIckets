@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tickets.Infrastructure;
@@ -13,17 +15,20 @@ namespace Tickets.Controllers
         public IActionResult Sale([FromBody] Ticket ticket)
         {
             var context = new TicketContext();
+            
+            context.Add(ticket);
 
-            var passenger = ticket.Passenger;
-            context.Passengers.Add(passenger);
-
-            context.Segments.Add(ticket);
-
-            foreach (var route in ticket.Routes)
-            {
-                context.Routes.Add(route);
-            }
-
+            context.SaveChanges();
+            return Ok();
+        }
+        
+        [HttpPost]
+        public IActionResult Refund([FromBody] Refund refund)
+        {
+            var context = new TicketContext();
+            
+            context.Add(refund);
+            
             context.SaveChanges();
             return Ok();
         }

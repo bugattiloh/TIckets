@@ -10,7 +10,7 @@ using Tickets.Infrastructure;
 namespace Tickets.Migrations
 {
     [DbContext(typeof(TicketContext))]
-    [Migration("20220505215322_Initial")]
+    [Migration("20220507172920_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,11 +29,11 @@ namespace Tickets.Migrations
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("DocNumber")
-                        .HasColumnType("integer");
+                    b.Property<string>("DocNumber")
+                        .HasColumnType("text");
 
-                    b.Property<int>("DocType")
-                        .HasColumnType("integer");
+                    b.Property<string>("DocType")
+                        .HasColumnType("text");
 
                     b.Property<string>("Gender")
                         .HasColumnType("text");
@@ -50,8 +50,8 @@ namespace Tickets.Migrations
                     b.Property<string>("Surname")
                         .HasColumnType("text");
 
-                    b.Property<int>("TicketNumber")
-                        .HasColumnType("integer");
+                    b.Property<string>("TicketNumber")
+                        .HasColumnType("text");
 
                     b.Property<string>("TicketType")
                         .HasColumnType("text");
@@ -101,7 +101,7 @@ namespace Tickets.Migrations
                     b.Property<string>("ArrivePlace")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DepartDateTime")
+                    b.Property<DateTime>("DepartDatetime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("DepartPlace")

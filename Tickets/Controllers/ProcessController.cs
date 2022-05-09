@@ -40,8 +40,9 @@ namespace Tickets.Controllers
         [ValidateModel]
         public IActionResult Refund([FromBody] RefundDto refundDto)
         {
+            var refundFromDb = _context.Refunds.FirstOrDefault(r => r.TicketNumber == refundDto.TicketNumber);
             var ticketFromDb = _context.Tickets.FirstOrDefault(t => t.Passenger.TicketNumber == refundDto.TicketNumber);
-            if (ticketFromDb == null)
+            if (ticketFromDb == null || refundFromDb != null)
             {
                 return Conflict();
             }

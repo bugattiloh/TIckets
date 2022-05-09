@@ -53,7 +53,7 @@ namespace Tickets.Migrations
                     Gender = table.Column<string>(type: "text", nullable: true),
                     PassengerType = table.Column<string>(type: "text", nullable: true),
                     TicketNumber = table.Column<string>(type: "text", nullable: true),
-                    TicketType = table.Column<string>(type: "text", nullable: true)
+                    TicketType = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Tickets.Infrastructure
@@ -7,7 +8,10 @@ namespace Tickets.Infrastructure
     public class RefundDto
     {
         public string OperationType { get; set; }
+        
+        [DataType(DataType.DateTime)]
         public DateTime OperationTime { get; set; }
+        
         public string OperationPlace { get; set; }
         public string TicketNumber { get; set; }
     }

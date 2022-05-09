@@ -51,8 +51,8 @@ namespace Tickets.Migrations
                     b.Property<string>("TicketNumber")
                         .HasColumnType("text");
 
-                    b.Property<string>("TicketType")
-                        .HasColumnType("text");
+                    b.Property<int>("TicketType")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

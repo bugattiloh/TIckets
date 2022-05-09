@@ -10,7 +10,7 @@ using Tickets.Infrastructure;
 namespace Tickets.Migrations
 {
     [DbContext(typeof(TicketContext))]
-    [Migration("20220508193912_init")]
+    [Migration("20220509174957_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,8 +53,8 @@ namespace Tickets.Migrations
                     b.Property<string>("TicketNumber")
                         .HasColumnType("text");
 
-                    b.Property<string>("TicketType")
-                        .HasColumnType("text");
+                    b.Property<int>("TicketType")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

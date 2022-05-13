@@ -6,8 +6,6 @@ namespace Tickets.Infrastructure.Models
 {
     public class Passenger
     {
-        [Key] [ForeignKey(nameof(Ticket))] public int Id { get; set; }
-        
         public string Name { get; set; }
         
         public string Surname { get; set; }
@@ -23,6 +21,7 @@ namespace Tickets.Infrastructure.Models
         public string Gender { get; set; }
         
         public string PassengerType { get; set; }
+        
         public string TicketNumber { get; set; }
         
         public int TicketType { get; set; }

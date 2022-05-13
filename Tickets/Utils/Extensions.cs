@@ -4,17 +4,17 @@ using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Schema.Generation;
 using Newtonsoft.Json.Serialization;
 
-namespace Tickets
+namespace Tickets.Utils
 {
     public static class Extensions
     {
         public static bool IsJsonValid(this string value, Type type)
         {
-            var generator = new JSchemaGenerator();
-            generator.ContractResolver = new DefaultContractResolver()
+            var generator = new JSchemaGenerator
             {
-                NamingStrategy = new SnakeCaseNamingStrategy()
+                ContractResolver = new DefaultContractResolver() {NamingStrategy = new SnakeCaseNamingStrategy()}
             };
+            
             var schema = generator.Generate(type);
             schema.AllowAdditionalProperties = false;
 

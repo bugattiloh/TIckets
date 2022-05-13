@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Tickets.Infrastructure.Models;
 
 namespace Tickets.Infrastructure
 {
-    public class TicketContext : DbContext
+    public  class TicketContext : DbContext
     {
         public TicketContext()
         {
@@ -11,12 +13,11 @@ namespace Tickets.Infrastructure
 
         public TicketContext(DbContextOptions options) : base(options)
         {
+            base.Database.SetCommandTimeout(120);
         }
 
-        public DbSet<Passenger> Passengers { get; set; }
-        public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<RouteSegment> Routes { get; set; }
-        public DbSet<Refund> Refunds { get; set; }
+       
+        public DbSet<Segment> Segments { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -27,6 +28,13 @@ namespace Tickets.Infrastructure
             }
             
             base.OnConfiguring(optionsBuilder);
+        }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Segment>()
+                .HasIndex(s => new { s.TicketNumber, s.SerialNumber })
+                .IsUnique();
         }
         
     }

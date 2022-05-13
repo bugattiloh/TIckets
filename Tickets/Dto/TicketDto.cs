@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Tickets.Infrastructure.Models;
+using Tickets.Utils;
 
-namespace Tickets.Infrastructure
+namespace Tickets.Dto
 {
     [ModelBinder(typeof(CustomBinder))]
     public class TicketDto
@@ -19,6 +17,6 @@ namespace Tickets.Infrastructure
         public string OperationPlace { get; set; }
         public PassengerDto Passenger { get; set; }
         
-        public ICollection<RouteSegmentDto> Routes { get; set; }
+        public ICollection<RouteDto> Routes { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Tickets.Dto;
 using Tickets.Infrastructure;
 using Tickets.Infrastructure.Models;
 
@@ -10,7 +11,7 @@ namespace Tickets
         {
             CreateMap<PassengerDto, Passenger>();
             CreateMap<TicketDto, Ticket>();
-            CreateMap<RouteSegmentDto, RouteSegment>();
+            CreateMap<RouteDto, Route>();
             CreateMap<RefundDto, Refund>();
         }
     }

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Tickets.Utils;
 
-namespace Tickets.Infrastructure
+namespace Tickets.Dto
 {
     [ModelBinder(typeof(CustomBinder))]
     public class RefundDto

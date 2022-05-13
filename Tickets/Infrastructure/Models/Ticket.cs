@@ -6,7 +6,6 @@ namespace Tickets.Infrastructure.Models
 {
     public class Ticket
     {
-        [Key] public int Id { get; set; }
         public string OperationType { get; set; }
         
         public DateTime OperationTime { get; set; }
@@ -14,6 +13,6 @@ namespace Tickets.Infrastructure.Models
         public string OperationPlace { get; set; }
         public virtual Passenger Passenger { get; set; }
         
-        public virtual ICollection<RouteSegment> Routes { get; set; }
+        public virtual ICollection<Route> Routes { get; set; }
     }
 }

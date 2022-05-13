@@ -1,12 +1,21 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Tickets.Dto;
 using Tickets.Infrastructure;
 using Tickets.Infrastructure.Models;
+using Tickets.Utils;
 
 namespace Tickets.Controllers
 {
     [Route("[controller]/[action]")]
+    [RequestSizeLimit(2 * 1024)]
     public class ProcessController : Controller
     {
         private readonly TicketContext _context;
@@ -20,38 +29,66 @@ namespace Tickets.Controllers
 
 
         [HttpPost]
+        [RequestSizeLimit(2 * 1024)]
         [ValidateModel]
-        public IActionResult Sale([FromBody] TicketDto ticketDto)
+        public async Task<IActionResult> Sale([FromBody] TicketDto ticketDto)
         {
-            var ticketFromDb = _context.Tickets.FirstOrDefault(t =>
-                t.Passenger.TicketNumber == ticketDto.Passenger.TicketNumber && t.OperationType != "refund");
-            if (ticketFromDb != null)
+            var segments = ticketDto.Routes.Select((route, i) => new Segment()
+            {
+                Name = ticketDto.Passenger.Name,
+                Surname = ticketDto.Passenger.Surname,
+                Patronymic = ticketDto.Passenger.Patronymic,
+                DocType = ticketDto.Passenger.DocType,
+                DocNumber = ticketDto.Passenger.DocNumber,
+                Birthdate = ticketDto.Passenger.Birthdate,
+                TicketNumber = ticketDto.Passenger.TicketNumber,
+                PassengerType = ticketDto.Passenger.PassengerType,
+                Gender = ticketDto.Passenger.Gender,
+                TicketType = ticketDto.Passenger.TicketType,
+                OperationType = ticketDto.OperationType,
+                OperationTime = ticketDto.OperationTime,
+                OperationPlace = ticketDto.OperationPlace,
+                AirlineCode = route.AirlineCode,
+                ArriveDatetime = route.ArriveDatetime,
+                ArrivePlace = route.ArrivePlace,
+                DepartDatetime = route.DepartDatetime,
+                DepartPlace = route.DepartPlace,
+                FlightNum = route.FlightNum,
+                PnrId = route.PnrId,
+                SerialNumber = i
+            });
+
+            try
+            {
+                await _context.AddRangeAsync(segments);
+                await _context.SaveChangesAsync();
+            }
+            catch
             {
                 return Conflict();
             }
 
-            var ticket = _mapper.Map<Ticket>(ticketDto);
-            _context.Tickets.Add(ticket);
-            _context.SaveChanges();
             return Ok();
         }
 
         [HttpPost]
         [ValidateModel]
-        public IActionResult Refund([FromBody] RefundDto refundDto)
+        [RequestSizeLimit(2 * 1024)]
+        public async Task<IActionResult> Refund([FromBody] RefundDto refundDto)
         {
-            var refundFromDb = _context.Refunds.FirstOrDefault(r => r.TicketNumber == refundDto.TicketNumber);
-            var ticketFromDb = _context.Tickets.FirstOrDefault(t => t.Passenger.TicketNumber == refundDto.TicketNumber);
-            if (ticketFromDb == null || refundFromDb != null)
+            var refundSegmentsFromDb = await _context.Segments.Where(s =>
+                s.TicketNumber == refundDto.TicketNumber && s.OperationType != "refund").ToListAsync();
+            if (refundSegmentsFromDb.Count == 0)
             {
                 return Conflict();
             }
 
-            ticketFromDb.OperationType = "refund";
+            foreach (var segment in refundSegmentsFromDb)
+            {
+                segment.OperationType = "refund";
+            }
 
-            var refund = _mapper.Map<Refund>(refundDto);
-            _context.Refunds.Add(refund);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return Ok();
         }
     }

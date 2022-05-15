@@ -1,14 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Net;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+using Tickets.DataAccess;
 using Tickets.Dto;
-using Tickets.Infrastructure;
 using Tickets.Infrastructure.Models;
 using Tickets.Utils;
 
@@ -18,13 +13,13 @@ namespace Tickets.Controllers
     [RequestSizeLimit(2 * 1024)]
     public class ProcessController : Controller
     {
-        private readonly TicketContext _context;
         private readonly IMapper _mapper;
+        private readonly ISegmentRepository _repository;
 
-        public ProcessController(TicketContext context, IMapper mapper)
+        public ProcessController(IMapper mapper, ISegmentRepository repository)
         {
-            _context = context;
             _mapper = mapper;
+            _repository = repository;
         }
 
 
@@ -60,8 +55,7 @@ namespace Tickets.Controllers
 
             try
             {
-                await _context.AddRangeAsync(segments);
-                await _context.SaveChangesAsync();
+                await _repository.InsertRangeAsync(segments);
             }
             catch
             {
@@ -76,8 +70,10 @@ namespace Tickets.Controllers
         [RequestSizeLimit(2 * 1024)]
         public async Task<IActionResult> Refund([FromBody] RefundDto refundDto)
         {
-            var refundSegmentsFromDb = await _context.Segments.Where(s =>
-                s.TicketNumber == refundDto.TicketNumber && s.OperationType != "refund").ToListAsync();
+            // var refund = _mapper.Map<Refund>(refundDto);
+            
+            var refundSegmentsFromDb =
+                await _repository.FindRefundSegmentsWithSameTicketNumberAsync(refundDto.TicketNumber);
             if (refundSegmentsFromDb.Count == 0)
             {
                 return Conflict();
@@ -87,8 +83,7 @@ namespace Tickets.Controllers
             {
                 segment.OperationType = "refund";
             }
-
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
             return Ok();
         }
     }

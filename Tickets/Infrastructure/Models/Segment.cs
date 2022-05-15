@@ -45,7 +45,7 @@ namespace Tickets.Infrastructure.Models
         public string TicketNumber { get; set; }
 
         public int TicketType { get; set; }
-        
+
         public int SerialNumber { get; set; }
     }
 }

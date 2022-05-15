@@ -15,7 +15,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Tickets.DataAccess;
 using Tickets.Infrastructure;
+using Tickets.Infrastructure.Models;
 
 namespace Tickets
 {
@@ -48,6 +50,7 @@ namespace Tickets
                 "Host=localhost;Port=5432;Database=ticketdb;Username=postgres;Password=fAP19796"));
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Tickets", Version = "v1"}); });
+            services.AddScoped<ISegmentRepository, SegmentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

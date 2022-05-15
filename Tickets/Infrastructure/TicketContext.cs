@@ -13,7 +13,6 @@ namespace Tickets.Infrastructure
 
         public TicketContext(DbContextOptions options) : base(options)
         {
-            base.Database.SetCommandTimeout(120);
         }
 
        

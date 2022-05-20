@@ -47,7 +47,7 @@ namespace Tickets
             });
             services.AddAutoMapper(o => o.AddProfile(new TicketProfile()));
             services.AddDbContext<TicketContext>(builder => builder.UseNpgsql(
-                "Host=localhost;Port=5432;Database=ticketdb;Username=postgres;Password=fAP19796"));
+                Configuration["ConnectionString"]));
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Tickets", Version = "v1"}); });
             services.AddScoped<ISegmentRepository, SegmentRepository>();

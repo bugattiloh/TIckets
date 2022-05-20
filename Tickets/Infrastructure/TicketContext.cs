@@ -7,12 +7,15 @@ namespace Tickets.Infrastructure
 {
     public  class TicketContext : DbContext
     {
-        public TicketContext()
+        private IConfiguration _configuration;
+        public TicketContext(IConfiguration configuration)
         {
+            _configuration = configuration;
         }
 
-        public TicketContext(DbContextOptions options) : base(options)
+        public TicketContext(DbContextOptions options, IConfiguration configuration) : base(options)
         {
+            _configuration = configuration;
         }
 
        
@@ -23,7 +26,7 @@ namespace Tickets.Infrastructure
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseNpgsql(
-                    "Host=localhost;Port=5432;Database=ticketdb;Username=postgres;Password=fAP19796");
+                    _configuration["ConnectionString"]);
             }
             
             base.OnConfiguring(optionsBuilder);

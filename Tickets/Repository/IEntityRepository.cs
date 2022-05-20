@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Tickets.Infrastructure.Models;
 
-namespace Tickets.DataAccess
+namespace Tickets.Repository
 {
     public interface IEntityRepository<T> where T : class, new()
     {

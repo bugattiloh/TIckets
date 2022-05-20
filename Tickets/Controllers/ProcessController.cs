@@ -2,14 +2,18 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Tickets.DataAccess;
 using Tickets.Dto;
 using Tickets.Infrastructure.Models;
+using Tickets.Repository;
 using Tickets.Utils;
+
 
 namespace Tickets.Controllers
 {
-    [Route("[controller]/[action]")]
+    [ApiController]
+    [ApiVersion("1.0")]
+    [Route("v{version:apiVersion}/[controller]/[action]")]
+    [ValidateModel]
     [RequestSizeLimit(2 * 1024)]
     public class ProcessController : Controller
     {
@@ -24,8 +28,6 @@ namespace Tickets.Controllers
 
 
         [HttpPost]
-        [RequestSizeLimit(2 * 1024)]
-        [ValidateModel]
         public async Task<IActionResult> Sale([FromBody] TicketDto ticketDto)
         {
             var segments = ticketDto.Routes.Select((route, i) => new Segment()
@@ -66,9 +68,7 @@ namespace Tickets.Controllers
         }
 
         [HttpPost]
-        [ValidateModel]
-        [RequestSizeLimit(2 * 1024)]
-        public async Task<IActionResult> Refund([FromBody] RefundDto refundDto)
+        public async Task<IActionResult> Refund([FromBody] RefundDto refundDto, string version)
         {
             // var refund = _mapper.Map<Refund>(refundDto);
             

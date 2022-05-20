@@ -15,9 +15,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Tickets.DataAccess;
 using Tickets.Infrastructure;
 using Tickets.Infrastructure.Models;
+using Tickets.Repository;
 
 namespace Tickets
 {
@@ -51,6 +51,7 @@ namespace Tickets
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Tickets", Version = "v1"}); });
             services.AddScoped<ISegmentRepository, SegmentRepository>();
+            services.AddApiVersioning();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,11 +66,11 @@ namespace Tickets
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TIckets v1"));
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            // app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

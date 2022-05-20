@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Tickets.Infrastructure;
 using Tickets.Infrastructure.Models;
 
-namespace Tickets.DataAccess
+namespace Tickets.Repository
 {
     public class SegmentRepository : ISegmentRepository
     {

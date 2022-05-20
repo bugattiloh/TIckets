@@ -14,8 +14,9 @@ namespace Tickets.Utils
             {
                 ContractResolver = new DefaultContractResolver() {NamingStrategy = new SnakeCaseNamingStrategy()}
             };
-            
+
             var schema = generator.Generate(type);
+          
             schema.AllowAdditionalProperties = false;
 
             var jObj = JObject.Parse(value);

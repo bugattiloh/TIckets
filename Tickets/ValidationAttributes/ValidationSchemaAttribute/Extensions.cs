@@ -4,7 +4,7 @@ using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Schema.Generation;
 using Newtonsoft.Json.Serialization;
 
-namespace Tickets.Utils
+namespace Tickets.ValidationAttributes.ValidationSchemaAttribute
 {
     public static class Extensions
     {

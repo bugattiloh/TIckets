@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Tickets.Infrastructure;
 using Tickets.Infrastructure.Models;
+using Tickets.Middleware;
 using Tickets.Repository;
 
 namespace Tickets
@@ -65,7 +66,9 @@ namespace Tickets
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TIckets v1"));
             }
-
+            
+            app.UseMiddleware<ExceptionCatcherMiddleware>();
+            
             // app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -73,6 +76,8 @@ namespace Tickets
             // app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+           
         }
     }
 }

@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Tickets.Middleware.Exceptions;
 
-namespace Tickets.Utils
+namespace Tickets.ValidationAttributes.ValidationSchemaAttribute
 {
     public class ValidateModelAttribute : ActionFilterAttribute
     {
@@ -22,7 +23,8 @@ namespace Tickets.Utils
 
                 if (context.ModelState.ContainsKey("size"))
                 {
-                    context.Result = new StatusCodeResult(413);
+                    throw new JsonSchemaTooLargeException("So large schema");
+                    // context.Result = new StatusCodeResult(413);
                 }
 
                 return;

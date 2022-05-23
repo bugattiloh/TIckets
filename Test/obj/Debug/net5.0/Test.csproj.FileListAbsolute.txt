@@ -131,3 +131,4 @@ C:\Users\1255968\Desktop\TIckets\Test\obj\Debug\net5.0\Test.pdb
 C:\Users\1255968\Desktop\TIckets\Test\obj\Debug\net5.0\Test.genruntimeconfig.cache
 C:\Users\1255968\Desktop\TIckets\Test\bin\Debug\net5.0\JsonSchema\refund_schema.json
 C:\Users\1255968\Desktop\TIckets\Test\bin\Debug\net5.0\JsonSchema\sale_schema.json
+C:\Users\1255968\Desktop\TIckets\Test\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.Versioning.dll

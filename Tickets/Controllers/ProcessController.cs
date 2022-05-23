@@ -4,8 +4,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Tickets.Dto;
 using Tickets.Infrastructure.Models;
+using Tickets.Middleware.Exceptions;
 using Tickets.Repository;
-using Tickets.Utils;
+using Tickets.ValidationAttributes.ValidationSchemaAttribute;
 
 
 namespace Tickets.Controllers
@@ -30,21 +31,22 @@ namespace Tickets.Controllers
         [HttpPost]
         public async Task<IActionResult> Sale([FromBody] TicketDto ticketDto)
         {
-            var segments = ticketDto.Routes.Select((route, i) => new Segment()
+            var tickets = _mapper.Map<Ticket>(ticketDto);
+            var segments = tickets.Routes.Select((route, i) => new Segment()
             {
-                Name = ticketDto.Passenger.Name,
-                Surname = ticketDto.Passenger.Surname,
-                Patronymic = ticketDto.Passenger.Patronymic,
-                DocType = ticketDto.Passenger.DocType,
-                DocNumber = ticketDto.Passenger.DocNumber,
-                Birthdate = ticketDto.Passenger.Birthdate,
-                TicketNumber = ticketDto.Passenger.TicketNumber,
-                PassengerType = ticketDto.Passenger.PassengerType,
-                Gender = ticketDto.Passenger.Gender,
-                TicketType = ticketDto.Passenger.TicketType,
-                OperationType = ticketDto.OperationType,
-                OperationTime = ticketDto.OperationTime,
-                OperationPlace = ticketDto.OperationPlace,
+                Name = tickets.Passenger.Name,
+                Surname = tickets.Passenger.Surname,
+                Patronymic = tickets.Passenger.Patronymic,
+                DocType = tickets.Passenger.DocType,
+                DocNumber = tickets.Passenger.DocNumber,
+                Birthdate = tickets.Passenger.Birthdate,
+                TicketNumber = tickets.Passenger.TicketNumber,
+                PassengerType = tickets.Passenger.PassengerType,
+                Gender = tickets.Passenger.Gender,
+                TicketType = tickets.Passenger.TicketType,
+                OperationType = tickets.OperationType,
+                OperationTime = tickets.OperationTime,
+                OperationPlace = tickets.OperationPlace,
                 AirlineCode = route.AirlineCode,
                 ArriveDatetime = route.ArriveDatetime,
                 ArrivePlace = route.ArrivePlace,
@@ -55,34 +57,27 @@ namespace Tickets.Controllers
                 SerialNumber = i
             });
 
-            try
-            {
-                await _repository.InsertRangeAsync(segments);
-            }
-            catch
-            {
-                return Conflict();
-            }
-
+            await _repository.InsertRangeAsync(segments);
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Refund([FromBody] RefundDto refundDto, string version)
+        public async Task<IActionResult> Refund([FromBody] RefundDto refundDto)
         {
-            // var refund = _mapper.Map<Refund>(refundDto);
-            
+            var refund = _mapper.Map<Refund>(refundDto);
+
             var refundSegmentsFromDb =
-                await _repository.FindRefundSegmentsWithSameTicketNumberAsync(refundDto.TicketNumber);
+                await _repository.FindRefundSegmentsWithSameTicketNumberAsync(refund.TicketNumber);
             if (refundSegmentsFromDb.Count == 0)
             {
-                return Conflict();
+                throw new RefundsWithSameTicketNumberIsNotFoundException("There are not refunds with same TicketNumber ");
             }
 
             foreach (var segment in refundSegmentsFromDb)
             {
                 segment.OperationType = "refund";
             }
+
             await _repository.SaveChangesAsync();
             return Ok();
         }

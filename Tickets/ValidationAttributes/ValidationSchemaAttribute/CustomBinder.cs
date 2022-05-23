@@ -1,16 +1,12 @@
-﻿using System;
-using System.Buffers;
-using System.Net;
-using System.Net.Http;
+﻿using System.Buffers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Tickets.Utils
+namespace Tickets.ValidationAttributes.ValidationSchemaAttribute
 {
     public class CustomBinder : IModelBinder
     {
@@ -49,7 +45,7 @@ namespace Tickets.Utils
             }
             catch (BadHttpRequestException)
             {
-                // bindingContext.ModelState.AddModelError("size", "size too large");
+                // throw new BusinessLogicException("dsgsdg");
             }
         }
     }

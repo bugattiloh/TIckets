@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.OpenApi.Models;
 using Moq;
 using NUnit.Framework;
 using Tickets.Infrastructure;
@@ -44,10 +45,29 @@ namespace Test.TestMethods
 
             //act
             var trueRefunds = await repository.FindRefundSegmentsWithSameTicketNumberAsync(number);
-        
+
 
             //assert
             Assert.IsTrue(trueRefunds.Count == 1);
+            Assert.IsTrue(trueRefunds.All(t=>t.OperationType == "refunds"));
+            
+            
+        }
+        
+        [Test]
+        public async Task TestInsertRangeAsync()
+        {
+            //arrange
+            var segmentsToAdd = new List<Segment>();
+            segmentsToAdd.Add(new Segment());
+            segmentsToAdd.Add(new Segment());
+            _segmentRepositoryMock.Setup(s => s.InsertRangeAsync(segmentsToAdd));
+            var repository = _segmentRepositoryMock.Object;
+            
+            //act
+            await repository.InsertRangeAsync(segmentsToAdd);
+            
+            //assert
 
         }
     }

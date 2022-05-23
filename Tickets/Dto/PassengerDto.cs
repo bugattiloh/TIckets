@@ -46,7 +46,7 @@ namespace Tickets.Dto
         public string TicketNumber { get; set; }
 
         [Required]
-        // [Range(0, 2, ErrorMessage = "TicketType validation error")]
+        [Range(0, 2, ErrorMessage = "TicketType validation error")]
         public int TicketType { get; set; }
     }
 }

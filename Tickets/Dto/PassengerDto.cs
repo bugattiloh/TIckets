@@ -34,7 +34,7 @@ namespace Tickets.Dto
         public DateTime Birthdate { get; set; }
 
         [Required]
-        [RegularExpression("[mf]{1}", ErrorMessage = "gender validation error")]
+        [RegularExpression("[MF]{1}", ErrorMessage = "gender validation error")]
         public string Gender { get; set; }
 
         [Required]
@@ -46,7 +46,7 @@ namespace Tickets.Dto
         public string TicketNumber { get; set; }
 
         [Required]
-        [Range(0, 2, ErrorMessage = "TicketType validation error")]
+        // [Range(0, 2, ErrorMessage = "TicketType validation error")]
         public int TicketType { get; set; }
     }
 }

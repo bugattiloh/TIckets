@@ -23,10 +23,11 @@ namespace Tickets.Dto
 
         [Required]
         [OnlyNumbers]
+        [StringLength(2,MinimumLength = 2)]
         public string DocType { get; set; }
 
         [Required]
-        [OnlyNumbers]
+        [OnlyNumbers] 
         public string DocNumber { get; set; }
 
         [Required]
@@ -43,6 +44,7 @@ namespace Tickets.Dto
 
         [Required]
         [OnlyNumbers]
+        [StringLength(13,MinimumLength = 13)]
         public string TicketNumber { get; set; }
 
         [Required]

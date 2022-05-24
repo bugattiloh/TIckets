@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Tickets.Middleware.Exceptions;
 
 namespace Tickets.Middleware
@@ -34,9 +35,21 @@ namespace Tickets.Middleware
                 context.Response.StatusCode = 413;
                 await context.Response.WriteAsync(ex.Message);
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException _ex)
             {
-                context.Response.StatusCode = 409;
+                if (_ex.InnerException is PostgresException npgex &&
+                    npgex.SqlState == PostgresErrorCodes.UniqueViolation)
+                {
+                    context.Response.StatusCode = 409;
+                    await context.Response.WriteAsync("Duplicate error");
+                }
+                else
+                {
+                    context.Response.StatusCode = 400;
+                    await context.Response.WriteAsync("Unknown error");
+                }
+
+                
             }
         }
     }

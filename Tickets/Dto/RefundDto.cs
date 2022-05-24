@@ -22,6 +22,7 @@ namespace Tickets.Dto
 
         [Required]
         [OnlyNumbers]
+        [StringLength(13,MinimumLength = 13)]
         public string TicketNumber { get; set; }
     }
 }

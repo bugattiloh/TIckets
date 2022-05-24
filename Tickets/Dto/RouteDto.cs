@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Tickets.ValidationAttributes.ValidationSchemaAttribute;
+using Tickets.ValidationAttributes.ValidationValuesAttributes;
 
 namespace Tickets.Dto
 {
@@ -9,9 +10,13 @@ namespace Tickets.Dto
     public class RouteDto
     {
         [Required]
+        [OnlyLetters]
+        [StringLength(2,MinimumLength = 2)]
         public string AirlineCode { get; set; }
 
         [Required]
+        [OnlyNumbers]
+        [StringLength(4,MinimumLength = 4)]
         public int FlightNum { get; set; }
 
         [Required]

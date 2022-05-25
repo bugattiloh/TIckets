@@ -23,7 +23,6 @@ namespace Tickets.Dto
 
         [Required]
         [OnlyNumbers]
-        [StringLength(2,MinimumLength = 2)]
         public string DocType { get; set; }
 
         [Required]

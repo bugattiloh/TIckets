@@ -11,12 +11,9 @@ namespace Tickets.Dto
     {
         [Required]
         [OnlyLetters]
-        [StringLength(2,MinimumLength = 2)]
         public string AirlineCode { get; set; }
 
         [Required]
-        [OnlyNumbers]
-        [StringLength(4,MinimumLength = 4)]
         public int FlightNum { get; set; }
 
         [Required]

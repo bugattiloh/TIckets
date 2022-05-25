@@ -35,9 +35,9 @@ namespace Tickets.Middleware
                 context.Response.StatusCode = 413;
                 await context.Response.WriteAsync(ex.Message);
             }
-            catch (DbUpdateException _ex)
+            catch (DbUpdateException ex)
             {
-                if (_ex.InnerException is PostgresException npgex &&
+                if (ex.InnerException is PostgresException npgex &&
                     npgex.SqlState == PostgresErrorCodes.UniqueViolation)
                 {
                     context.Response.StatusCode = 409;

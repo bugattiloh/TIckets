@@ -17,10 +17,10 @@ namespace Tickets.Dto
         [DataType(DataType.DateTime)]
         public DateTime OperationTime { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         public string OperationPlace { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         public PassengerDto Passenger { get; set; }
 
         [Required]

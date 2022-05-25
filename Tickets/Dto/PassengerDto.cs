@@ -9,15 +9,15 @@ namespace Tickets.Dto
     [ModelBinder(typeof(CustomBinder))]
     public class PassengerDto
     {
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         [OnlyLetters]
         public string Name { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         [OnlyLetters]
         public string Surname { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         [OnlyLetters]
         public string Patronymic { get; set; }
 
@@ -26,7 +26,7 @@ namespace Tickets.Dto
         public string DocType { get; set; }
 
         [Required]
-        [OnlyNumbers] 
+        [OnlyNumbers]
         public string DocNumber { get; set; }
 
         [Required]
@@ -43,7 +43,7 @@ namespace Tickets.Dto
 
         [Required]
         [OnlyNumbers]
-        [StringLength(13,MinimumLength = 13)]
+        [StringLength(13, MinimumLength = 13)]
         public string TicketNumber { get; set; }
 
         [Required]

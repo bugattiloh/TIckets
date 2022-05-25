@@ -45,7 +45,6 @@ namespace Tickets.ValidationAttributes.ValidationSchemaAttribute
             }
             catch (BadHttpRequestException)
             {
-                // throw new BusinessLogicException("dsgsdg");
             }
         }
     }

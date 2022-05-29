@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -54,9 +55,9 @@ namespace Tickets.Controllers
                 DepartPlace = route.DepartPlace,
                 FlightNum = route.FlightNum,
                 PnrId = route.PnrId,
-                SerialNumber = i
+                SerialNumber = i,
             });
-
+            
             await _repository.InsertRangeAsync(segments);
             return Ok();
         }
@@ -70,7 +71,8 @@ namespace Tickets.Controllers
                 await _repository.FindRefundSegmentsWithSameTicketNumberAsync(refund.TicketNumber);
             if (refundSegmentsFromDb.Count == 0)
             {
-                throw new RefundsWithSameTicketNumberIsNotFoundException("There are not refunds with same TicketNumber ");
+                throw new RefundsWithSameTicketNumberIsNotFoundException(
+                    "There are not refunds with same TicketNumber ");
             }
 
             foreach (var segment in refundSegmentsFromDb)

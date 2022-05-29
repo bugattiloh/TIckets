@@ -37,8 +37,7 @@ namespace Tickets.Middleware
             }
             catch (DbUpdateException ex)
             {
-                if (ex.InnerException is PostgresException npgex &&
-                    npgex.SqlState == PostgresErrorCodes.UniqueViolation)
+                if (ex.InnerException is PostgresException {SqlState: PostgresErrorCodes.UniqueViolation})
                 {
                     context.Response.StatusCode = 409;
                     await context.Response.WriteAsync("Duplicate error");
@@ -48,8 +47,6 @@ namespace Tickets.Middleware
                     context.Response.StatusCode = 400;
                     await context.Response.WriteAsync("Unknown error");
                 }
-
-                
             }
         }
     }

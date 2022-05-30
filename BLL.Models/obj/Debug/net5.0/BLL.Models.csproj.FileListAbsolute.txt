@@ -1,0 +1,12 @@
+C:\Users\1255968\Desktop\TIckets\BLL.Models\bin\Debug\net5.0\BLL.Models.deps.json
+C:\Users\1255968\Desktop\TIckets\BLL.Models\bin\Debug\net5.0\BLL.Models.dll
+C:\Users\1255968\Desktop\TIckets\BLL.Models\bin\Debug\net5.0\ref\BLL.Models.dll
+C:\Users\1255968\Desktop\TIckets\BLL.Models\bin\Debug\net5.0\BLL.Models.pdb
+C:\Users\1255968\Desktop\TIckets\BLL.Models\obj\Debug\net5.0\BLL.Models.csproj.AssemblyReference.cache
+C:\Users\1255968\Desktop\TIckets\BLL.Models\obj\Debug\net5.0\BLL.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\1255968\Desktop\TIckets\BLL.Models\obj\Debug\net5.0\BLL.Models.AssemblyInfoInputs.cache
+C:\Users\1255968\Desktop\TIckets\BLL.Models\obj\Debug\net5.0\BLL.Models.AssemblyInfo.cs
+C:\Users\1255968\Desktop\TIckets\BLL.Models\obj\Debug\net5.0\BLL.Models.csproj.CoreCompileInputs.cache
+C:\Users\1255968\Desktop\TIckets\BLL.Models\obj\Debug\net5.0\BLL.Models.dll
+C:\Users\1255968\Desktop\TIckets\BLL.Models\obj\Debug\net5.0\ref\BLL.Models.dll
+C:\Users\1255968\Desktop\TIckets\BLL.Models\obj\Debug\net5.0\BLL.Models.pdb

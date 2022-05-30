@@ -20,36 +20,19 @@ namespace Tickets.Controllers
         {
             _segmentService = segmentService;
         }
-
+        
 
         [HttpPost]
         public async Task<IActionResult> Sale([FromBody] TicketDto ticketDto)
         {
-            var responseSale = await _segmentService.Sale(ticketDto);
-
-            if (responseSale._responseCode == 409)
-            {
-                return Conflict(responseSale._message);
-            }
-
-            if (responseSale._responseCode == 400)
-            {
-                return BadRequest(responseSale._message);
-            }
-
+            await _segmentService.Sale(ticketDto);
             return Ok();
         }
 
         [HttpPost]
         public async Task<IActionResult> Refund([FromBody] RefundDto refundDto)
         {
-            var responseRefund = await _segmentService.Refund(refundDto);
-
-            if (responseRefund._responseCode == 409)
-            {
-                return Conflict(responseRefund._message);
-            }
-
+            await _segmentService.Refund(refundDto);
             return Ok();
         }
     }

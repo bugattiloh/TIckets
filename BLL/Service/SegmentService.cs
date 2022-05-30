@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.Models.Dto;
+using BLL.Models.Exceptions;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ namespace BLL.Service
             _mapper = mapper;
         }
 
-        public async Task<BaseResponse> Sale([FromBody] TicketDto ticketDto)
+        public async Task Sale([FromBody] TicketDto ticketDto)
         {
             var tickets = _mapper.Map<Ticket>(ticketDto);
             var segments = ticketDto.Routes.Select((route, i) => new Segment()
@@ -49,31 +50,17 @@ namespace BLL.Service
                 PnrId = route.PnrId,
                 SerialNumber = i,
             }).ToList();
-            try
-            {
-                await _repository.InsertRangeAsync(segments);
-            }
-            catch (DbUpdateException ex)
-            {
-                if (ex.InnerException is PostgresException {SqlState: PostgresErrorCodes.UniqueViolation})
-                {
-                    return new BaseResponse(409, "Duplicate error");
-                }
-
-                return new BaseResponse(400, "Unknown error");
-            }
-
-            return new BaseResponse(200, "Ok");
+            await _repository.InsertRangeAsync(segments);
         }
 
-        public async Task<BaseResponse> Refund([FromBody] RefundDto refundDto)
+        public async Task Refund([FromBody] RefundDto refundDto)
         {
             var refund = _mapper.Map<Refund>(refundDto);
             var refundSegmentsFromDb =
                 await _repository.FindRefundSegmentsWithSameTicketNumberAsync(refund.TicketNumber);
             if (refundSegmentsFromDb.Count == 0)
             {
-                return new BaseResponse(409, "Conflict");
+                throw new RefundsWithSameTicketNumberIsNotFoundException("Duplicate error");
             }
 
             foreach (var segment in refundSegmentsFromDb)
@@ -83,7 +70,6 @@ namespace BLL.Service
 
             await _repository.SaveChangesAsync();
             
-            return new BaseResponse(200, "OK");
         }
     }
 }

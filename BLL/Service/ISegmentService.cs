@@ -5,7 +5,7 @@ namespace BLL.Service
 {
     public interface ISegmentService
     {
-        Task<BaseResponse> Sale(TicketDto ticketDto);
-        Task<BaseResponse> Refund(RefundDto refundDto);
+        Task Sale(TicketDto ticketDto);
+        Task Refund(RefundDto refundDto);
     }
 }

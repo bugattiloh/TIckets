@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.OpenApi.Models;
+using Infrastructure.Repositories;
+using Models.Db;
 using Moq;
 using NUnit.Framework;
-using Tickets.Infrastructure;
-using Tickets.Infrastructure.Models;
-using Tickets.Repository;
 
 
 namespace Test.TestMethods

@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
+using BLL.Models.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using Tickets.Middleware.Exceptions;
 
 namespace Tickets.Middleware
 {

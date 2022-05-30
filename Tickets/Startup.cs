@@ -1,3 +1,7 @@
+using BLL;
+using BLL.Service;
+using Infrastructure;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Tickets.Infrastructure;
 using Tickets.Middleware;
-using Tickets.Repository;
 
 namespace Tickets
 {
@@ -28,22 +30,25 @@ namespace Tickets
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.Error =
-                    (sender, args) => _logger.LogCritical(args.ErrorContext.Error.Message);
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver()
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
                 {
-                    NamingStrategy = new SnakeCaseNamingStrategy()
-                };
-            });
+                    options.SerializerSettings.Error =
+                        (sender, args) => _logger.LogCritical(args.ErrorContext.Error.Message);
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver()
+                    {
+                        NamingStrategy = new SnakeCaseNamingStrategy()
+                    };
+                });
             services.AddAutoMapper(o => o.AddProfile(new TicketProfile()));
             services.AddDbContext<TicketContext>(builder => builder.UseNpgsql(
-                Configuration["ConnectionString"]));
+                Configuration["ConnectionString"]
+            ));
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Tickets", Version = "v1"}); });
             services.AddScoped<ISegmentRepository, SegmentRepository>();
+            services.AddScoped<ISegmentService, SegmentService>();
             services.AddApiVersioning();
         }
 
@@ -58,9 +63,9 @@ namespace Tickets
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TIckets v1"));
             }
-            
+
             app.UseMiddleware<ExceptionCatcherMiddleware>();
-            
+
             // app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -68,8 +73,6 @@ namespace Tickets
             // app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
-           
         }
     }
 }

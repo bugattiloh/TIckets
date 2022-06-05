@@ -1,7 +1,10 @@
+using System.Reflection;
 using BLL;
+using BLL.CommandHandlers;
 using BLL.Service;
 using Infrastructure;
 using Infrastructure.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +53,7 @@ namespace Tickets
             services.AddScoped<ISegmentRepository, SegmentRepository>();
             services.AddScoped<ISegmentService, SegmentService>();
             services.AddApiVersioning();
+            services.AddMediatR(typeof(SaleTicketCommandHandler));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

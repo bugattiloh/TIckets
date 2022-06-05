@@ -1,29 +1,29 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using BLL.Models.Dto;
-using BLL.Models.Exceptions;
+using BLL.Models.Tickets.Commands.SaleTicket;
 using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Mvc;
+using MediatR;
 using Models.Db;
 
-namespace BLL.Service
+namespace BLL.CommandHandlers
 {
-    public class SegmentService : ISegmentService
+    public class SaleTicketCommandHandler : IRequestHandler<SaleTicketCommand>
     {
         private readonly ISegmentRepository _repository;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
-        public SegmentService(ISegmentRepository repository, IMapper mapper)
+        public SaleTicketCommandHandler(ISegmentRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        public async Task Sale([FromBody] TicketDto ticketDto)
+        public async Task<Unit> Handle(SaleTicketCommand request, CancellationToken cancellationToken)
         {
-            var tickets = _mapper.Map<Ticket>(ticketDto);
-            var segments = ticketDto.Routes.Select((route, i) => new Segment()
+            var tickets = _mapper.Map<Ticket>(request.TicketDto);
+            var segments = tickets.Routes.Select((route, i) => new Segment()
             {
                 Name = tickets.Passenger.Name,
                 Surname = tickets.Passenger.Surname,
@@ -48,25 +48,7 @@ namespace BLL.Service
                 SerialNumber = i,
             }).ToList();
             await _repository.InsertRangeAsync(segments);
-        }
-
-        public async Task Refund([FromBody] RefundDto refundDto)
-        {
-            var refund = _mapper.Map<Refund>(refundDto);
-            var refundSegmentsFromDb =
-                await _repository.FindRefundSegmentsWithSameTicketNumberAsync(refund.TicketNumber);
-            if (refundSegmentsFromDb.Count == 0)
-            {
-                throw new RefundsWithSameTicketNumberIsNotFoundException("Duplicate error");
-            }
-
-            foreach (var segment in refundSegmentsFromDb)
-            {
-                segment.OperationType = "refund";
-            }
-
-            await _repository.SaveChangesAsync();
-            
+            return Unit.Value;
         }
     }
 }
